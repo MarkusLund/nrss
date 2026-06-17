@@ -241,3 +241,6 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,deno,macos,emacs
 # Fresh build output
 _fresh/
+
+# Playwright MCP output
+.playwright-mcp/

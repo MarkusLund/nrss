@@ -4,7 +4,6 @@ import Search from "../components/Search.tsx";
 import SeriesCard from "../components/SeriesCard.tsx";
 import { CSS, render } from "$gfm";
 import { nrkRadio, NrkSearchResultList } from "../lib/nrk/nrk.ts";
-import { DonationSection } from "../islands/DonationSection.tsx";
 
 type Props = {
   query: string | null;
@@ -48,7 +47,6 @@ export default function Home({ data, url }: PageProps<Props>) {
           class="markdown-body"
           dangerouslySetInnerHTML={{ __html: render(data?.rawMarkdown) }}
         />
-        <DonationSection />
       </div>
     </>
   );
