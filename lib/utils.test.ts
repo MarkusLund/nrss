@@ -20,7 +20,7 @@ Deno.test(
   () => {
     const response = responseJSON({ message: "Hello, World!" }, 200);
     const cachedResponse = withExpiry(response, 3600);
-    assertEquals(cachedResponse.headers.get("Cache-Control"), "max-age=3600");
+    assertEquals(cachedResponse.headers.get("Cache-Control"), "max-age=3600, s-maxage=3600");
   },
 );
 
@@ -48,7 +48,7 @@ Deno.test(
     const cachedResponse = withExpiry(response, ttlInSeconds);
     assertEquals(
       cachedResponse.headers.get("Cache-Control"),
-      `max-age=${ttlInSeconds}`,
+      `max-age=${ttlInSeconds}, s-maxage=${ttlInSeconds}`,
     );
   },
 );
