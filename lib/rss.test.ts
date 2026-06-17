@@ -1,4 +1,4 @@
-import { assertEquals, assertExists, assertLess } from "$std/assert/mod.ts";
+import { assertEquals, assertExists } from "$std/assert/mod.ts";
 import { testUtils } from "./test-utils.ts";
 import { rss } from "./rss.ts";
 import { forTestingOnly } from "./rss.ts";
@@ -26,33 +26,9 @@ Deno.test("generated rss contains all episode titles", () => {
   });
 });
 
-Deno.test("generated rss contains promo with link to donations page", () => {
+Deno.test("generated rss does not contain donation promo", () => {
   const series = testUtils.generateSeries();
   const feed = rss.assembleFeed(series);
 
-  feed.includes("Vurder å støtte utviklingen via Vipps");
-});
-
-Deno.test("generated rss contains promo with link to donations page", () => {
-  const series = testUtils.generateSeries();
-  const feed = rss.assembleFeed(series);
-
-  const indexOfFirstPromotion = feed.indexOf(
-    "NRSS er avhengig av din Vipps-støtte",
-  );
-  const indexOfSecondPromotion = feed.indexOf("Vurder å støtte utviklingen");
-  assertLess(
-    indexOfFirstPromotion,
-    indexOfSecondPromotion,
-    "First promotion should come before the second",
-  );
-});
-
-Deno.test("first promotion is removed", () => {
-  const series = testUtils.generateSeries();
-  const feed = rss.assembleFeed(series);
-  const indexOfFirstPromotion = feed.indexOf(
-    "NRSS er avhengig av din Vipps-støtte",
-  );
-  assertEquals(indexOfFirstPromotion, -1, "First promotion should be removed");
+  assertEquals(feed.includes("Vurder å støtte utviklingen"), false);
 });

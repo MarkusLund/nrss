@@ -17,10 +17,15 @@ const config = {
   baseUrl: Deno.env.get("VIPPS_API_BASE_URL"),
 };
 
-// ensure all environment variables are set
-for (const [key, value] of Object.entries(config)) {
-  if (!value) {
-    throw new Error(`Missing environment variable: ${key}`);
+// Verify Vipps config lazily, only when a donation action is actually
+// attempted. Checking at module load would crash the whole app on boot
+// (this module is imported eagerly via fresh.gen.ts) for deployments that
+// don't use the donation flow.
+function assertVippsConfig() {
+  for (const [key, value] of Object.entries(config)) {
+    if (!value) {
+      throw new Error(`Missing environment variable: ${key}`);
+    }
   }
 }
 
@@ -32,6 +37,7 @@ const standardVippsHeaders = {
 } as const;
 
 const getAccessToken = async function () {
+  assertVippsConfig();
   console.log(`Fetching ${`${config.baseUrl}/accesstoken/get`}`);
   const response = await fetch(`${config.baseUrl}/accesstoken/get`, {
     method: "POST",

@@ -1,6 +1,12 @@
 import { STATUS_CODE } from "$fresh/server.ts";
 
 export function getHostUrl() {
+  // Explicit override for self-hosting under a custom/renamed domain
+  // (e.g. the new Deno Deploy's "<app>.<org>.deno.net" pattern).
+  const explicitHostUrl = Deno.env.get("HOST_URL");
+  if (explicitHostUrl) {
+    return explicitHostUrl;
+  }
   const deploymentId = Deno.env.get("DENO_DEPLOYMENT_ID");
   const tunnelUrl = Deno.env.get("TUNNEL_URL");
   if (deploymentId) {
